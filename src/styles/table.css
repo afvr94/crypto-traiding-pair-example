@@ -3,7 +3,7 @@
 }
 
 .tr {
-  @apply w-full border-b border-gray-100 dark:border-gray-500 grid grid-flow-col auto-cols-fr even:bg-blue-50 odd:bg-white dark:even:bg-transparent dark:odd:bg-transparent;
+  @apply w-full border-b border-gray-100 dark:border-gray-500 grid grid-flow-col auto-cols-fr bg-white dark:bg-transparent;
 }
 
 .th {
