@@ -1,0 +1,21 @@
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s;
+  @apply fixed z-50 w-full h-full flex justify-center items-center inset-0;
+}
+
+.modal-content {
+  @apply overflow-auto flex flex-col bg-white w-9/12 p-8 rounded-2xl opacity-100 shadow h-5/6;
+}
+
+.close-modal-button {
+  @apply font-medium text-white border-none bg-blue-600 rounded ml-auto p-2;
+}
+
+.modal-title {
+  @apply mt-4 font-bold text-xl;
+}
+
+.modal-description {
+  @apply break-words text-base mt-4;
+}
