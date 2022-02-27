@@ -12,6 +12,7 @@ const Table = ({ columns, data, searchText, sorting, onSort }) => {
   const isModalOpen = description.length > 0;
 
   const handleOnClickMoreInfo = (payload) => {
+    // formatting json to add to modal
     setDescription(JSON.stringify(payload, null, 2));
   };
 
@@ -22,7 +23,7 @@ const Table = ({ columns, data, searchText, sorting, onSort }) => {
   const RenderRow = useCallback(
     ({ index, style }) => {
       return (
-        <div style={style} className="tr">
+        <div style={style} className="tr" data-testid={`table-row-${index}`}>
           {columns.map((column) => (
             <div className={classNames('td', column.cellClassName)} key={column.key}>
               <Highlighter

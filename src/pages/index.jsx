@@ -4,7 +4,9 @@ import { Header, Table, Input } from '../components';
 import { Order, COLUMNS, State } from '../constants';
 
 const Homepage = () => {
+  // Original result of API
   const [tradingPairs, setTradingPairs] = useState([]);
+  // Data that will be constantly changing (with the Original we can go back)
   const [filteredTradingPairs, setFilteredTradingPairs] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [state, setState] = useState(State.LOADING);
@@ -47,6 +49,7 @@ const Homepage = () => {
       return;
     }
     const filterData = tradingPairs.filter((item) => {
+      // lowercase everything so we can have better matching
       const lowerCaseSearch = inputSearchText.toLowerCase();
       return (
         item.display_name.toLowerCase().includes(lowerCaseSearch) ||
