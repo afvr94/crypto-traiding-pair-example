@@ -33,3 +33,9 @@ export const COLUMNS = [
     isSearchable: false,
   },
 ];
+
+export const State = {
+  LOADING: 'loading',
+  SUCCESS: 'success',
+  ERROR: 'error',
+};

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Header, Table, Input } from '../components';
-import { Order, COLUMNS } from '../constants';
+import { Order, COLUMNS, State } from '../constants';
 
 const Homepage = () => {
   const [tradingPairs, setTradingPairs] = useState([]);
   const [filteredTradingPairs, setFilteredTradingPairs] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [state, setState] = useState(State.LOADING);
   const [sorting, setSorting] = useState({
     sortBy: '',
     order: Order.ASCENDING,
@@ -22,13 +23,20 @@ const Homepage = () => {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      const { data: result } = await axios.get('https://api.exchange.coinbase.com/products');
-      const onlineTradingPairs = result.filter((item) => item.status === 'online');
-      setTradingPairs(onlineTradingPairs);
+    const fetchTradingPairs = async () => {
+      try {
+        setState(State.LOADING);
+        const { data: result } = await axios.get('https://api.exchange.coinbase.com/products');
+        const onlineTradingPairs = result.filter((item) => item.status === 'online');
+        setTradingPairs(onlineTradingPairs);
+        setFilteredTradingPairs(onlineTradingPairs);
+        setState(State.SUCCESS);
+      } catch {
+        setState(State.ERROR);
+      }
+    };
 
-      setFilteredTradingPairs(onlineTradingPairs);
-    })();
+    fetchTradingPairs();
   }, []);
 
   const handleOnSearchChange = (event) => {
@@ -74,14 +82,24 @@ const Homepage = () => {
     <div className="flex flex-col min-h-full dark:bg-slate-900 min-w-max h-full bg-gray-200">
       <Header />
       <div className="flex flex-col h-full p-10">
-        <Input onChange={handleOnSearchChange} />
-        <Table
-          columns={COLUMNS}
-          data={filteredTradingPairs}
-          searchText={searchText}
-          sorting={sorting}
-          onSort={handleOnSort}
-        />
+        {state === State.ERROR && (
+          <h2 className="text-2xl text-red-600">Oh no! We encountered an error! 😔 </h2>
+        )}
+        {state === State.LOADING && (
+          <h2 className="text-2xl text-stale-600 dark:text-white">Loading your data... 🤖 </h2>
+        )}
+        {state === State.SUCCESS && (
+          <>
+            <Input onChange={handleOnSearchChange} />
+            <Table
+              columns={COLUMNS}
+              data={filteredTradingPairs}
+              searchText={searchText}
+              sorting={sorting}
+              onSort={handleOnSort}
+            />
+          </>
+        )}
       </div>
     </div>
   );
